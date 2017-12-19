@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt#此例子会生成nan错误答案，不知道为何
+import matplotlib.pyplot as plt#此例子会生成nan错误答案，不知道为何#lasso and 岭回归
 import numpy as np
 import tensorflow as tf
 from sklearn import datasets

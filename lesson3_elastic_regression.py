@@ -22,7 +22,7 @@ l2_a_loss=tf.reduce_mean(tf.square(A))
 e1_term=tf.multiply(elastic_param1,l1_a_loss)
 e2_term=tf.multiply(elastic_param2,l2_a_loss)
 loss=tf.expand_dims(tf.add(tf.add(tf.reduce_mean(tf.square(
-    y_target-model_output)),e1_term),e2_term),0)
+    y_target-model_output)),e1_term),e2_term),0)#弹性回归，岭回归与lasso结合的方式
 init=tf.global_variables_initializer()
 sess.run(init)
 my_opt=tf.train.GradientDescentOptimizer(learning_rate)
