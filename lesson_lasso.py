@@ -8,6 +8,7 @@ sess=tf.Session()
 iris=datasets.load_iris()
 x_vals=np.array([x[3] for x in iris.data])
 y_vals=np.array([y[0] for y in iris.data])
+
 batch_size=50
 learning_rate=0.001
 x_data=tf.placeholder(shape=[None,1],dtype=tf.float32)

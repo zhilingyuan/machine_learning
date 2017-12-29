@@ -1,14 +1,15 @@
 #maximum margin  used in linear poly
 #not svm
+#svm 把数据拟合到直线两边epsilon
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from sklearn import datasets
+import pdb
 
 from tensorflow.python.framework import ops
-
-sess=tf.Session()
 ops.reset_default_graph()
+sess=tf.Session()#reset 和 sess 互换则产生graph is empty 错误
 
 iris=datasets.load_iris()
 
@@ -37,6 +38,7 @@ loss=tf.reduce_mean(tf.maximum(0.,
             tf.subtract(tf.abs(tf.subtract(model_output,y_vals)),epsilon)))
 my_opt=tf.train.GradientDescentOptimizer(0.075)
 train_step=my_opt.minimize(loss)
+
 init=tf.global_variables_initializer()
 sess.run(init)
 
@@ -46,11 +48,13 @@ for i in range(200):
     rand_index=np.random.choice(len(x_vals_train),size=batch_size)
     rand_x=np.transpose([x_vals_train[rand_index]])
     rand_y=np.transpose([x_vals_train[rand_index]])
-    sess.run(train_step,feed_dict={x_data:rand_x,y_target:rand_y})
+    sess.run(train_step,feed_dict={x_data:rand_x,y_data:rand_y})
     temp_train_loss=sess.run(loss,feed_dict={x_data:np.transpose([x_vals_train]),
                                              y_data:np.transpose([y_vals_train])})
     temp_test_loss=sess.run(loss,feed_dict={x_data:np.transpose([x_vals_test]),
                                             y_data:np.transpose([y_vals_test])})
+
+    pdb.set_trace();
     #一维的transpose 有意义吗？？？
     test_loss.append(temp_test_loss)
     train_loss.append(temp_train_loss)
@@ -61,3 +65,31 @@ for i in range(200):
         print('train_loss'+str(temp_train_loss))
         print('test_loss'+str(temp_test_loss))
         
+[[slope]]=sess.run(A)
+[[y_intercept]]=sess.run(b)
+[width]=sess.run(epsilon)#0.5
+
+best_fit=[]
+best_fit_upper=[]
+best_fit_lower=[]
+for i in x_vals:
+    best_fit.append(slope*i+y_intercept)
+    best_fit_upper.append(slope*i+y_intercept+width)
+    best_fit_lower.append(slope*i+y_intercept-width)
+
+plt.plot(x_vals,y_vals,'o',label='Data Points')
+plt.plot(x_vals,best_fit,'r-',label='svm regression',linewidth=3)
+plt.plot(x_vals,best_fit_lower,'r--',linewidth=2)
+plt.plot(x_vals,best_fit_upper,'r--',linewidth=2)
+plt.ylim([0,10])
+plt.legend(loc='lower right')
+plt.title('sepal length vs pedal width')
+plt.xlabel('pedal width')
+plt.ylabel('sepal length')
+plt.show()
+plt.plot(train_loss,'k-',label='train set loss')
+plt.plot(test_loss,'r--',label='test set loss')
+plt.xlabel('generation')
+plt.ylabel('l2 loss')
+plt.legend(loc='upper right')
+plt.show()
