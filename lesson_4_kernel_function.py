@@ -9,6 +9,7 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
+import pdb
 from sklearn import datasets
 from tensorflow.python.framework import ops
 ops.reset_default_graph()
@@ -60,7 +61,7 @@ sess.run(init)
 
 loss_vec=[]
 batch_accuracy=[]
-for i in range(50000):
+for i in range(5000):
     rand_index=np.random.choice(len(x_vals),batch_size)
     rand_x=x_vals[rand_index]
     rand_y=np.transpose([y_vals[rand_index]])
@@ -68,8 +69,21 @@ for i in range(50000):
     temp_loss=sess.run(loss,feed_dict={x_data:rand_x,
                                        y_target:rand_y})
     loss_vec.append(temp_loss)
+
+    pred_sq_dist_temp=sess.run(pred_sq_dist,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:rand_x})
+    
+    pred_kernel_temp=sess.run(pred_kernel,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:rand_x})
+    
+    prediction_output_temp=sess.run(prediction_output,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:rand_x})
+    
     acc_temp=sess.run(accuracy,feed_dict={
         x_data:rand_x,y_target:rand_y,prediction_grid:rand_x})
+    #对于kernel 的矩阵运算 以及y_target的矩阵表达;矩阵表示困难
+    #pdb.set_trace()
+    
     batch_accuracy.append(acc_temp)
     if(i+1)%1000==0:
         print('step: '+str(i+1))
@@ -83,8 +97,20 @@ xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.02),
 grid_points = np.c_[xx.ravel(), yy.ravel()]#ravel 将多维转换为一维 返回原有数据 flatten 返回拷贝
 [grid_predictions] = sess.run(prediction, feed_dict={x_data: rand_x,
                                                    y_target: rand_y,
-                                                   prediction_grid: grid_points})
+                                                   prediction_grid:grid_points})
+
+pred_sq_dist_temp=sess.run(pred_sq_dist,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:grid_points})
+    
+pred_kernel_temp=sess.run(pred_kernel,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:grid_points})
+    
+prediction_output_temp=sess.run(prediction_output,feed_dict={
+        x_data:rand_x,y_target:rand_y,prediction_grid:grid_points})
+ #对于kernel 的矩阵运算 以及y_target的矩阵表达
+ #pdb.set_trace()
 grid_predictions = grid_predictions.reshape(xx.shape)
+
 
 plt.contourf(xx, yy, grid_predictions, cmap=plt.cm.Paired, alpha=0.8)
 plt.plot(class1_x, class1_y, 'ro', label='Class 1')
