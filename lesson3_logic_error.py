@@ -18,7 +18,7 @@ if not os.path.exists(birth_weight_file):
     birth_header=birth_data[0].split('\t')
     birth_data=[[float(x) for x in y.split('\t') if len(x)>=1]
                  for y in birth_data[1:] if len(y)>=1]
-    with open(birth_weight_file,'w') as f:
+    with open(birth_weight_file,'w',newline='') as f:#newline=''去除空行
         writer=csv.writer(f)
         writer.writerow(birth_header)
         writer.writerows(birth_data)
@@ -27,7 +27,7 @@ if not os.path.exists(birth_weight_file):
 birth_data=[]
 with open(birth_weight_file,newline='') as csvfile:
     csv_reader=csv.reader(csvfile)
-    birth_header=csv_reader.__next__#等价于 call as:next(reder)
+    birth_header=next(csv_reader)
     for row in csv_reader:
         birth_data.append(row)
     csvfile.close()
@@ -54,6 +54,7 @@ def normalize_cols(m):
     
 x_vals_train = np.nan_to_num(normalize_cols(x_vals_train))
 x_vals_test = np.nan_to_num(normalize_cols(x_vals_test))
+batch_size = 25
 
 x_data = tf.placeholder(shape=[None, 7], dtype=tf.float32)
 y_target = tf.placeholder(shape=[None, 1], dtype=tf.float32)
