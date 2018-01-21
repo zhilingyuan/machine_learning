@@ -73,8 +73,10 @@ def tokenizer(text):
 tfidf=TfidfVectorizer(tokenizer=tokenizer,stop_words='english',
                       max_features=max_features)#采用上面定义的分词器
 #stop words string{'english'} list or None 
-sparse_tfidf_texts=tfidf.fit_transform(texts)
+sparse_tfidf_texts=tfidf.fit_transform(texts)#原理？？？
 
+import pdb
+pdb.set_trace()
 train_indices=np.random.choice(sparse_tfidf_texts.shape[0],
                                round(0.8*sparse_tfidf_texts.shape[0]),replace=False)
 test_indices=np.array(list(set(range(sparse_tfidf_texts.shape[0]))
