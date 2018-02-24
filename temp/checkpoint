@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\Users\\admin\\Documents\\GitHub\\machine_learning\\temp\\cbow_movie_embeddings.ckpt"
+all_model_checkpoint_paths: "C:\\Users\\admin\\Documents\\GitHub\\machine_learning\\temp\\cbow_movie_embeddings.ckpt"
