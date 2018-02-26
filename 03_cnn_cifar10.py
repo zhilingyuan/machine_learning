@@ -1,7 +1,12 @@
+# More Advanced CNN Model: CIFAR-10
+#---------------------------------------
+#
+# In this example, we will download the CIFAR-10 images
+# and build a CNN model with dropout and regularization
+#
+# CIFAR is composed ot 50k train and 10k test
+# images that are 32x32.
 
-#threading error
-
-#？？？？
 import os
 import sys
 import tarfile
