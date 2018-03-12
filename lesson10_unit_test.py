@@ -148,7 +148,7 @@ class shape_test(tf.test.TestCase):
             self.assertShapeEqual(numpy_array, model_output)
 
 # Perform unit tests
-tf.test.main()
+tf.test.main()#运行测试 
 
 # Start training loop
 train_loss = []
