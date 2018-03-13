@@ -16,3 +16,4 @@ sess_soft=tf.Session(config=config)
 
 
 print(sess_soft.run(c))
+
